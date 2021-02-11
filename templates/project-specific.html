@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row justify-content-md-center">
+    <div class="col-md-11">
+      <h2>{{project.name}}</h2>
+
+      <p>Posted By {{project.user.display_name}}</p>
+      <br />
+      <p><i>{{project.description}}</i></p>
+      <br />
+      <p>Contact ({{project.contact_info_type}}):  {{project.contact_info}}</p>
+      <p>Project Location: {{project.lat}}, {{project.long}}</p>
+      <br />
+      <p>Tags: {{tags}}</p>
+
+      <hr />
+      <div>
+        <p>Inquiry Deadline (YYYY-MM-DD): {{project.inquiry_deadline or "N/A"}}</p>
+        <p>Work Start Date (YYYY-MM-DD): {{project.work_start or "N/A"}}</p>
+        <p>Work End Date (YYYY-MM-DD): {{project.work_end or "N/A"}}</p>
+      </div>
+
+      <hr />
+      <div>
+        {% if project.pic_url1 %}
+          <img src="{{project.pic_url1}}" alt="project picture 1" width="500px"/>
+        {% endif %}
+        {% if project.pic_url2 %}
+          <img src="{{project.pic_url2}}" alt="project picture 2" width="500px"/>
+        {% endif %}
+      </div>
+
+      <iframe width="300px" height="300px" 
+          frameborder="0" style="border:0" 
+          src="https://www.google.com/maps/embed/v1/place?q={{project.lat}}%20{{project.long}}
+          &key={{g.API_KEY}}" allowfullscreen>
+      </iframe>
+      <br />
+      
+      <div id="btn-group">
+        {% if g.user.id == project.user_id %}
+            <a href="/project/{{project.id}}/edit" class="btn btn-success">Edit this Project</a>
+        {% endif %}   
+        <a href="/search" class="btn btn-secondary">Go Back to Search Page</a>
+      </div> 
+    </div>        
+  </div>
+{% endblock %}

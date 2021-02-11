@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key={{g.API_KEY}}&callback=initMap&libraries=places&v=weekly"
+    defer></script>
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <h2>Update Your User Profile!</h2>
+
+      <br />
+      <form method="POST">
+        <div id="wtforms">
+          {{ form.hidden_tag() }}
+
+          {% for field in form if field.name not in ['password', 'lat', 'long'] and field.widget.input_type != 'hidden' %}
+            <p>
+              {{ field.label }}
+              {{ field }}
+              {% for error in field.errors %}
+              <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+            </p>
+          {% endfor %}
+        </div>
+
+        <hr />
+        <div id="map-area">
+          {{ form.lat.label }}
+          {{ form.lat }}
+          {{ form.long.label }}
+          {{ form.long }}
+
+          <p>To change latitude and longitude, click on the updated location on the map below.</p>
+          <input id="autocomplete-input" type="text" />
+          <button id="map-search-button">Search</button>
+
+          <div id="map-container"
+            data-lat={{g.user.lat}}
+            data-long={{g.user.long}}>
+            <div id="map"></div>
+          </div>
+        </div>
+
+        <hr />
+        <p>To confirm any profile changes, enter your current password:</p>
+        {{ form.password(placeholder="Password") }}
+        {% for error in form.password.errors %}
+                  <span class="text-danger">{{ error }}</span>
+        {% endfor %}  
+
+        <br />
+        <div class="btn-group">
+          <button class="btn btn-success">Make Changes to Profile</button>
+          <a href="/" class="btn btn-secondary">Go Back to Search</a>
+          <a href="/profile/delete/{{g.user.id}}" class="btn btn-danger">Delete Account</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/AJAX-calls.js"></script>
+<script src="/static/map-start-point.js"></script>
+{% endblock %}

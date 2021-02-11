@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Creative Project Matchmaker</title>
+  {% block head %}{% endblock %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="bg-info">
+  <div class="container-fluid card m-0 p-0">
+    <img class="img-fluid m-0 p-0" src="/static/images/rhondak-native-florida-folk-artist-unsplash-banner-cropped.jpg" alt="logo">
+    <div class="card-img-overlay m-auto p-lg-5 p-md-4 p-sm-0 m-sm-0">
+      <h1 class="card-title text-center text-light p-sm-0 m-sm-0">Creative Project Matchmaker</h1>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark sticky-top">
+    <div class="container-fluid"> 
+      <div class="collapse navbar-collapse">
+        {% if g.guest %}
+          <ul class="navbar-nav ml-auto" style="list-style-type: none;">
+            <li class="nav-item">
+              <a class="nav-link btn btn-outline-info" href="/logout">Log out of Guest Mode</a>
+            </li>
+        {% elif g.user %}
+          <ul class="navbar-nav mr-auto" style="list-style-type: none;"></ul>
+            <li class="nav-item">
+              <img src="{{ g.user.profile_pic }}" alt="{{ g.user.username }} 
+                class="img-thumbnail" width="50px" height="50px">
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/edit">Edit Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/project/new">New Project</a>
+            </li>  
+          </ul>
+          <ul class="navbar-nav ml-auto" style="list-style-type: none;">
+            <li class="nav-item">
+              <a class="nav-link btn btn-outline-info" href="/logout">Log out</a>
+            </li>
+        {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div id="content-div" class="container">
+    <br />
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  
+    {% block content %}
+    {% endblock %}
+  </div>
+  
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+{% block script %}
+{% endblock %}
+
+</body>
+</html>

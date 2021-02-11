@@ -1,0 +1,18 @@
+#map-container {
+  height: 200px;
+  width: 80%;
+}
+
+#map-container-large {
+  height: 300px;
+  width: 90%;
+}
+
+#map {
+    height: 100%;
+}
+
+.navbar-nav{
+  list-style: none;
+}
+

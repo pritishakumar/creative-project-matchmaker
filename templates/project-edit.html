@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{g.API_KEY}}&callback=initMap&libraries=places&v=weekly" defer>
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-md-center">
+    <div class="col-md-9">
+      <h2>Edit Your Article</h2>
+      <form method="POST">
+
+        <div id="wtforms">
+          {{ form.hidden_tag() }}
+          {% for field in form if field.widget.input_type != 'hidden' and field.name not in ['lat', 'long'] %}
+            <p>
+              {{ field.label }}
+              {{ field}}
+              {% for error in field.errors %}
+              <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+            </p>
+          {% endfor %}
+        </div>
+        
+        <div id="tag-area">
+          <div hidden id="hidden-tags">
+            {{ form.tags }}
+          </div>
+          <label for="tag-select">Type each tag, add if it's an existing tag, or create a new one.</label>
+          <input id="tag-select" list="tags-all"  placeholder="Type your tag" data-existing="{{tags_list_str or None}}"/>
+            <datalist id="tags-all">
+              {% for tag in tags_full_list %}
+                <option value="{{tag}}" />
+              {% endfor %}
+            </datalist>
+          <button id="create-tag-button" style="display: none;"></button>
+          <p>List of Tags Added:</p>
+          <ul id="selected-tags">
+            <!-- Tags to be inserted here -->
+          </ul>
+          <br />
+          <hr />
+        </div>
+
+        <div id="map-area">
+          {{form.long.label}}
+          {{form.long(value = g.user.long)}}
+          {{form.lat.label}}
+          {{form.lat(value = g.user.lat)}}
+
+          <input id="autocomplete-input" type="text" />
+          <button id="map-search-button">Search</button>
+          <br />
+          <div id="map-container"
+            data-lat="{{g.user.lat}}"
+            data-long="{{g.user.long}}">
+            <div id="map"></div>
+          </div>
+        </div>    
+
+        <div id="btn-group">
+          <button class="btn btn-success">Update Project</button>
+          <a href="/search" class="btn btn-secondary">Go Back to Search Page</a> 
+          <a href="/project/delete/{{project.id}}" class="btn btn-danger">Delete Project</a> 
+        </div>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
+  
+{% block script %}
+<script src="/static/AJAX-calls.js"></script>
+<script src="/static/map-project.js"></script>
+{% endblock %}

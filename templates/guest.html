@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key={{g.API_KEY}}&callback=initMap&libraries=places&v=weekly"
+    defer></script>
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <h2>Guest Access!</h2>
+      <br />
+
+      <form id="map-search-form" action="#">
+        <input id="autocomplete-input" type="text" />
+        <button id="map-search-button">Search</button>
+      </form>
+      <br />
+      <div id="map-container"
+        data-lat="49.313"
+        data-long="-123.142">
+        <div id="map"></div>
+      </div>
+
+      <br />
+      <form id="coordinates-form" method="POST">
+        
+        <div id="wtforms">
+          {{ form.hidden_tag() }}
+
+          {% for field in form if field.widget.input_type != 'hidden' %}
+            <p>
+              {{ field.label }}
+              {{ field }}
+              {% for error in field.errors %}
+              <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+            </p>
+          {% endfor %}
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-success">Enter Search Page</button>
+          <a href="/" class="btn btn-secondary">Go Back to Options</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/AJAX-calls.js"></script>
+<script src="/static/map-start-point.js"></script>
+{% endblock %}
+    

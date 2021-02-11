@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key={{g.API_KEY}}&callback=initMap&libraries=places&v=weekly"
+  defer></script>
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-md-center">
+    <div class="col-md-11">
+      <h2>Make A New Account</h2>
+      <form method="POST">
+        
+        <div id="wtforms">
+          {{ form.hidden_tag() }}
+
+          {% for field in form if field.widget.input_type != 'hidden' and field.name not in ['lat', 'long'] %}
+            <p>
+              {{ field.label }}
+              {{ field }}
+              {% for error in field.errors %}
+              <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+            </p>
+          {% endfor %}
+        </div>
+
+        <div id="map-area">
+          <hr />
+          {{ form.lat.label }}
+          {{ form.lat (value="49.313")}}
+          <br />
+          {{ form.long.label }}
+          {{ form.long (value="-123.142")}}
+
+          <p>To add a latitude and longitude, click the best location on the map below, to start your search. It will be saved with your profile for future searches (and kept private)!</p>
+            <input id="autocomplete-input" type="text" />
+            <button id="map-search-button">Search</button>
+
+          <div id="map-container" 
+            data-lat="49.313"
+            data-long="-123.142">
+            <div id="map"></div>
+          </div>
+
+        </div> 
+
+        <div class="btn-group">
+          <button class="btn btn-success">Add New User</button>
+          <a href="/" class="btn btn-secondary">Go Back to Options</a>
+        </div>
+      </form>
+        
+    </div>  
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/AJAX-calls.js"></script>
+<script src="/static/map-start-point.js"></script>
+{% endblock %}

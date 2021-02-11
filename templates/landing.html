@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Creative Project Matchmaker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="bg-info">
+  <div id="header-img" class="container-fluid bg-dark">
+    <h2 class="text-center text-light">Welcome to <i>Creative Project Matchmaker</i></h2>
+    <img class="img-fluid" src="/static/images/my-life-through-a-lens-unsplash-banner-cropped.jpg" 
+    alt="Together We Create Banner" />
+  </div>
+  
+  <br />
+  <div id="flashed-messaged">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+    {% endfor %}
+  <br />
+  </div>
+  
+  <div id="options" class="row d-flex justify-content-around">
+    <div class="col-md-4 col-sm-6">
+      <h3 class="text-center">An Existing Account?</h2>
+      <p class="text-center"><a class="btn btn-lg btn-dark" href="/login">Login!</a></p>
+    </div>
+
+    <div class="col-md-4 col-sm-6 m-auto">
+      <h3 class="text-center">Make A New Account?</h2>
+      <p class="text-center"><a class="btn btn-lg btn-dark" href="/profile/new">Sign Up!</a></p>
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+      <h3 class="text-center">Proceed As A Guest?</h2>
+      <p class="text-center"><a class="btn btn-lg btn-dark" href="/guest">Guest Access!</a></p>
+    </div>
+  </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  
+</body>
+</html>

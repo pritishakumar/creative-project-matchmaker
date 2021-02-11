@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{g.API_KEY}}&callback=initMap&libraries=places&v=weekly" defer>
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-11">
+      <h2>Search</h2>
+      <hr />
+
+      <div id="map-area">
+        <form id="map-search-form">
+          <label for="autocomplete-input">
+            To go to a different area, use the search or drag the map:
+          </label>
+          <input id="autocomplete-input" type="text" />
+          <button id="map-search-button">Search</button>
+        </form>
+        
+        <br />
+        <div id="map-container-large"
+          {% if g.user %}
+            data-lat={{g.user.lat}}
+            data-long={{g.user.long}}
+          {% elif g.guest %}
+            data-lat={{g.guest.lat}}
+            data-long={{g.guest.long}}
+          {% endif %} >
+          <div id="map"></div>
+        </div>
+      </div>
+
+      <br />
+      <div id="results-div">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Project Name</th>
+              <th scope="col">Tags</th>
+              <th scope="col">User</th>
+            </tr>
+          </thead>
+          <tbody id="project-results">
+            <!-- Results will be listed here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/AJAX-calls.js"></script>
+<script src="/static/map-search.js"></script>
+{% endblock %}
