@@ -1,5 +1,5 @@
 ## Creative Project Matchmaker
-
+<img src="https://media-exp1.licdn.com/dms/image/C562DAQFvRD5AD7UZrA/profile-treasury-image-shrink_1280_1280/0/1617813124236?e=1618855200&v=beta&t=ygRQCRJ1eDlQwIqF6wwP1ZlzbTJNVd4G6ktIu0MlktI" alt="" />
 A web app where users can create or find posts to meet like-minded individuals who are looking to collaborate on creative projects in their area. 
 
 #### Tech Stack:
