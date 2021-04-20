@@ -16,9 +16,9 @@ A web app where users can create or find posts to meet like-minded individuals w
 - go to URL given by CLI or `http://127.0.0.1:5000/`
 
 #### Testing:
-(In Progress) ~~~~~~~~************************************************************************************** 
+(In Progress) 
 
-#### Test user (In Progress)  ~~~~~~~~************************************************************************************** 
+#### Test user (In Progress)
 - Username: `test@test.com`
 - Password: `password`
 
