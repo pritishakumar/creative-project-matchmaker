@@ -1,5 +1,5 @@
 ## Creative Project Matchmaker
-<img src="https://media-exp1.licdn.com/dms/image/C562DAQFvRD5AD7UZrA/profile-treasury-image-shrink_1280_1280/0/1617813124236?e=1618855200&v=beta&t=ygRQCRJ1eDlQwIqF6wwP1ZlzbTJNVd4G6ktIu0MlktI" alt="" />
+<img src="https://lh3.googleusercontent.com/ERZoYMn9K1sCNg8Cqu4W6BuoDKwZmR-g_pSiMh_apTxArCErRfk0iofAkaPLdA2MTQFR5lN0ljUj6LgzD_r5te8K9oSCl6vrWxmzwE7g3N5bjT0NwCHFpinUmQuY9d9X97VVRQb5i-xFM_W95qY3NFpUd-vBmbthTx_0ueOXFBHWyOm9yQr-5Mgk6tUFzuaLzRSRgDBQvolc0YYrBq5KELVC-r9jF_7OZ66ddauOo4F60PFcHGCRAy-2T9Y4g3ZCAS66fh6aPxKkhYth15zKNNKaoXKuj8fseW1pY7R4uvFqxGVLVbLWf6qWzw82YUBUP6ngPdQSXxLKKYHuqvQGIqRUdVxoQVyPNyZNyc0mpC-6c1S9xOo4S1qOKzAQsoDI1SFPLLfNVVbrb_xtV-axR5cNU6CJkSBI3OLPg4FM6dLw5OMCdiNB5-jkGU-cXyH5xq5MLkUHbdZWlCi9udiINAO8cid5jtHF7kTlFDI6DoLJgvS1NvDeaBzdli0SegqbOHgcmb4rygSwbAQzzyyV-vtsz1ythUGF6phZ5WfLy4UBN9j6bQeLaU0sj3P0dthlQ0_rMF0d_YrIgPvP-oUuNbugTiYhRqykRXCMctUczQ3tv3FvgCnNrxYLmmbMNakv6b_7wb8xt2uV4rFUBuduA1C6zM_IsFbloJ9e7EXufjHBGnfveOvvM-17FnDMzMJ6MEpaTdz3W54wmdmcluNF2MSZmg=w1354-h751-no?authuser=0" alt="" />
 A web app where users can create or find posts to meet like-minded individuals who are looking to collaborate on creative projects in their area. 
 
 #### Tech Stack:
