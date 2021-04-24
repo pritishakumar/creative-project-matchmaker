@@ -86,7 +86,7 @@ from within the root directory, run `python -m unittest`
   - only executes logic if user is logged in during this session as a Registered User (Flask session is checked for data), otherwise redirects to Search page (if logged in as a Guest) or Landing page (if not logged in at all)
   - authorization required: logged in as Registered User
   
-- POST - http://127.0.0.1:5000/profile/delete/<user_id> (/profile/delete/<user_id>)
+- POST - http://127.0.0.1:5000/profile/delete/{user_id} (/profile/delete/{user_id})
   - Registered User Profile Edit Form
   - processes profile edit form data for a logged in user, saves changes if user password matches and redirect to Search page
   - only executes logic if user is logged in during this session as the same Registered User as the account being deleted (Flask session is checked for data), otherwise redirects to Search page (if logged in as a Guest) or Landing page (if not logged in at all)
@@ -103,23 +103,23 @@ from within the root directory, run `python -m unittest`
   - only renders if user is logged in during this session as a Registered User (Flask session is checked for data), otherwise redirects to Search page (if logged in as a Guest) or Landing page (if not logged in at all)
   - authorization required: logged in as Registered User
   
-- GET - http://127.0.0.1:5000/project/<project_id> (/project/<project_id>)
+- GET - http://127.0.0.1:5000/project/{project_id} (/project/{project_id})
   - Project Detail Page
   - renders details of a specific project
   - authorization required: none
   
-- GET - http://127.0.0.1:5000/project/<project_id>/edit (/project/<project_id>/edit)
+- GET - http://127.0.0.1:5000/project/{project_id}/edit (/project/{project_id}/edit)
   - Project Edit Form
   - renders form for editing a specific project
   - only renders if user is logged in during this session as the Registered User owner of the post (Flask session is checked for data), otherwise redirects to Project Detail page
   - authorization required: logged in as Registered User and owner of post
-- POST - http://127.0.0.1:5000/project/<project_id>/edit (/project/<project_id>/edit)
+- POST - http://127.0.0.1:5000/project/{project_id}/edit (/project/{project_id}/edit)
   - Process Project Edit Form
   - processes form data for editing a specific project and redirects to the updated Project Detail page
   - only executes logic if user is logged in during this session as the Registered User owner of the post (Flask session is checked for data), otherwise redirects to Project Detail page
   - authorization required: logged in as Registered User and owner of post
 
-- POST - http://127.0.0.1:5000/project/<project_id>/delete (/project/<project_id>/delete)
+- POST - http://127.0.0.1:5000/project/{project_id}/delete (/project/{project_id}/delete)
   - Delete Project
   - deletes a specific project
   - only executes logic if user is logged in during this session as the Registered User owner of the post (Flask session is checked for data), otherwise redirects to Project Detail page
@@ -127,13 +127,13 @@ from within the root directory, run `python -m unittest`
 
 #### Backend Routes (intended for internal AJAX use only)
 
-- GET - http://127.0.0.1:5000/api/geocode?address=<urlSafeAddress> (/project/api/geocode?address=<urlSafeAddress>)
+- GET - http://127.0.0.1:5000/api/geocode?address={urlSafeAddress} (/project/api/geocode?address={urlSafeAddress})
   - Geocoding API Data Submit
   - address = text, a URL safe address viable for the Google Maps Geocoding API
   - retrieves the address and makes a GET request, returning latitude and longitude
   - authorization required: none
 
-- GET - http://127.0.0.1:5000/api/neighborhood?north={north}&south=<south>&<east>&<west> (/project/api/neighborhood?<north>&<south>&<east>&<west>)
+- GET - http://127.0.0.1:5000/api/neighborhood?north={max_lat}&south={min_lat}&east={max_long}&west={min_long} (north={max_lat}&south={min_lat}&east={max_long}&west={min_long})
   - Retrieve Nearby Projects
   - retrieves the nearby projects using the latitude and longitude bounds of the user's viewpoint
   - authorization required: none
