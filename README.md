@@ -16,9 +16,9 @@ A web app where users can create or find posts to meet like-minded individuals w
 - go to URL given by CLI or `http://127.0.0.1:5000/`
 
 #### Testing:
-(In Progress) 
+from within the root directory, run `python -m unittest`
 
-#### Test user (In Progress)
+#### Test user
 - Username: `test@test.com`
 - Password: `password`
 
