@@ -125,20 +125,20 @@ from within the root directory, run `python -m unittest`
   - only executes logic if user is logged in during this session as the Registered User owner of the post (Flask session is checked for data), otherwise redirects to Project Detail page
   - authorization required: logged in as Registered User and owner of post
 
-#### Backend Routes
+#### Backend Routes (intended for internal AJAX use only)
 
-- GET - http://127.0.0.1:5000/api/geocode?<address> (/project/api/geocode?<address>)
+- GET - http://127.0.0.1:5000/api/geocode?address=<urlSafeAddress> (/project/api/geocode?address=<urlSafeAddress>)
   - Geocoding API Data Submit
   - address = text, a URL safe address viable for the Google Maps Geocoding API
   - retrieves the address and makes a GET request, returning latitude and longitude
-  - authorization required: ****************~~~~
+  - authorization required: none
 
-- GET - http://127.0.0.1:5000/api/neighborhood?<north>&<south>&<east>&<west> (/project/api/neighborhood?<north>&<south>&<east>&<west>)
+- GET - http://127.0.0.1:5000/api/neighborhood?north={north}&south=<south>&<east>&<west> (/project/api/neighborhood?<north>&<south>&<east>&<west>)
   - Retrieve Nearby Projects
   - retrieves the nearby projects using the latitude and longitude bounds of the user's viewpoint
-  - authorization required: ****************~~~~
+  - authorization required: none
 
 - GET - http://127.0.0.1:5000/api/tags (/api/tags)
   - Retrieve All Existing Tags List
   - retrieves a JSON list of all existing tags
-  - authorization required: ****************~~~~
+  - authorization required: none
