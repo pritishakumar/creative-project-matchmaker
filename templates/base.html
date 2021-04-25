@@ -25,7 +25,9 @@
         {% if g.guest %}
           <ul class="navbar-nav ml-auto" style="list-style-type: none;">
             <li class="nav-item">
-              <a class="nav-link btn btn-outline-info" href="/logout">Log out of Guest Mode</a>
+              <form action="/logout" method="POST">
+                <button class="nav-link btn btn-outline-info" type="submit">Log out of Guest Mode</button>
+              </form>
             </li>
           </ul>
         {% elif g.user %}
@@ -43,7 +45,9 @@
           </ul>
           <ul class="navbar-nav ml-auto" style="list-style: none;">
             <li class="nav-item">
-              <a class="nav-link btn btn-outline-info" href="/logout">Log out</a>
+              <form action="/logout" method="POST">
+                <button class="nav-link btn btn-outline-info" type="submit">Log out</button>
+              </form>
             </li>
           </ul>
         {% endif %}

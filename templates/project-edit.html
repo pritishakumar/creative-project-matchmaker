@@ -64,7 +64,9 @@
         <div id="btn-group">
           <button class="btn btn-success">Update Project</button>
           <a href="/search" class="btn btn-secondary">Go Back to Search Page</a> 
-          <a href="/project/delete/{{project.id}}" class="btn btn-danger">Delete Project</a> 
+          <form action="/project/{{project.id}}/delete" method="POST">
+            <button class="btn btn-danger" type="submit">Delete Project</button>
+          </form>
         </div>
       </form>
 

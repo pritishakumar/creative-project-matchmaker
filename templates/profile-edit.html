@@ -57,7 +57,10 @@
         <div class="btn-group">
           <button class="btn btn-success">Make Changes to Profile</button>
           <a href="/" class="btn btn-secondary">Go Back to Search</a>
-          <a href="/profile/delete/{{g.user.id}}" class="btn btn-danger">Delete Account</a>
+          <form action="/profile/delete/{{g.user.id}}" method="POST">
+            <button class="btn btn-danger" type="submit">Delete Account</button>
+          </form>
+          <!-- <a href="/profile/delete/{{g.user.id}}" class="btn btn-danger">Delete Account</a> -->
         </div>
       </form>
 

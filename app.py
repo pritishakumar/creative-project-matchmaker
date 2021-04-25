@@ -77,7 +77,7 @@ def sign_up_page():
         flash("You are already logged into an account, please log out before creating a new account.", "danger")
         return redirect("/search")
     
-    form = UserAddForm()
+    form = UserAddForm(prefix='form-user-signup-')
 
     if form.validate_on_submit():
         user_obj = {
@@ -109,7 +109,7 @@ def login_page():
         flash("You are already logged into an account.", "success")
         return redirect("/search")
     
-    form = LoginForm()
+    form = LoginForm(prefix='form-user-login-')
 
     if form.validate_on_submit():
         email = form.email.data
@@ -125,7 +125,7 @@ def login_page():
     return render_template("login.html", form=form)
 
 
-@app.route("/logout")
+@app.route("/logout", methods = ["POST"])
 def logout():
     """ Logs current user out of their account """
 
@@ -142,7 +142,7 @@ def guest_page():
         flash("You are already logged into an account.", "success")
         return redirect("/search") 
 
-    form = GeocodeForm()
+    form = GeocodeForm(prefix='form-user-guest-')
 
     if form.validate_on_submit():
         lat = form.lat.data
@@ -179,7 +179,7 @@ def profile_edit():
         else:
             return redirect("/")
     
-    form = UserEditForm(obj = g.user)
+    form = UserEditForm(obj = g.user, prefix='form-user-edit-')
 
     if form.validate_on_submit():
         user = User.login(form.email.data, form.password.data)
@@ -202,7 +202,7 @@ def profile_edit():
     return render_template("profile-edit.html", form=form)
 
 
-@app.route("/profile/delete/<user_id>")
+@app.route("/profile/delete/<user_id>", methods = ["POST"])
 def profile_delete(user_id):
     """ Deletes the currently logged in user """
 
@@ -233,7 +233,7 @@ def project_new():
         else:
             return redirect("/")
 
-    form = ProjectForm()
+    form = ProjectForm(prefix='form-project-new-')
     tags_full_list = Tag.list_all()
 
     if form.validate_on_submit():
@@ -248,7 +248,9 @@ def project_new():
                     optional_date_values.append(date)
                     print(date, 'in if', optional_date_values)
             except ValueError:
-                pass
+                optional_date_values.append(None)
+                print('caught value error', optional_date_values)
+            except AttributeError:
                 optional_date_values.append(None)
                 print('caught value error', optional_date_values)
         inquiry_deadline_date, work_start_date, work_end_date = optional_date_values
@@ -290,13 +292,13 @@ def project_new():
 
 
 @app.route("/project/<project_id>")
-def project_specific(project_id):
+def project_detail(project_id):
     """ Renders page for a specific project """
 
     project = Project.lookup_project(project_id)
     tags = ', '.join([tag.name for tag in project.tags])
 
-    return render_template("project-specific.html", project=project, tags=tags)
+    return render_template("project-detail.html", project=project, tags=tags)
 
 
 @app.route("/project/<project_id>/edit", methods = ["GET", "POST"])
@@ -308,7 +310,12 @@ def project_edit(project_id):
         return redirect(f"/project/{project_id}")
 
     project = Project.lookup_project(project_id)
-    form = ProjectForm(obj = project)
+    project = Project.lookup_project(project_id)
+    if g.user.id != project.user.id:
+        flash("Unauthorized user. Correct user account needed.", "danger")
+        return redirect(f"/project/{project_id}")
+
+    form = ProjectForm(obj = project, prefix='form-project-edit-')
 
     tags_full_list = Tag.list_all()
     project_tags = [tag.name for tag in project.tags]
@@ -358,7 +365,7 @@ def project_edit(project_id):
     return render_template("project-edit.html", form=form, project=project, tags_list_str=tags_list_str, tags_full_list=tags_full_list)
 
 
-@app.route("/project/delete/<project_id>")
+@app.route("/project/<project_id>/delete")
 def project_delete(project_id):
     """ Renders form to delete a specific project"""
 
