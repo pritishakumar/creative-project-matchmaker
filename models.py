@@ -236,6 +236,7 @@ class Tag(db.Model):
 
     @classmethod
     def lookup_tag(cls, name):
-        """ Looks up tag object based on name and returns it """
+        """ Looks up tag object based on name and returns it
+        Returns None if not found """
         tag = cls.query.filter_by(name=name).first()
         return tag

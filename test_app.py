@@ -105,6 +105,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_signup_get(self):
 		"""Tests the get request that renders the form"""
+
 		with app.test_client() as client:
 			resp = client.get("/profile/new")
 
@@ -171,6 +172,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_login_get(self):
 		""" Tests rendering the form via Get request"""
+
 		with app.test_client() as client:
 			resp = client.get("/login")
 
@@ -202,6 +204,7 @@ class UserViewsTestCase(TestCase):
 	def test_login_post_redirected(self):
 		"""Ensures redirected page renders correctly after Post 
 		request data is processed"""
+
 		with app.test_client() as client:
 			resp = client.post(
 				"/login", data={
@@ -223,6 +226,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_guest_get(self):
 		"""Ensures Guest form renders correctly"""
+
 		with app.test_client() as client:
 			resp = client.get("/guest")
 
@@ -254,6 +258,7 @@ class UserViewsTestCase(TestCase):
 	
 	def test_guest_post_redirected(self):
 		"""Ensure redirected page renders correctly after Post request"""
+
 		with app.test_client() as client:
 			resp = client.post(
 				"/guest", data={
@@ -286,6 +291,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_logout_redirected(self):
 		"""Ensures user log out renders landing page correctly"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = 999
@@ -306,6 +312,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_user_edit_get(self):
 		"""Ensures user profile edit form renders"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -323,6 +330,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_user_edit_post(self):
 		"""Ensures user profile edit Post request redirects after processing data"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -347,6 +355,7 @@ class UserViewsTestCase(TestCase):
 	def test_user_edit_post_redirected(self):
 		"""Ensures redirected page renders correctly after correctly processing
 		Post request data"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -378,6 +387,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_user_delete_post(self):
 		"""Ensures user account deletion redirects"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -389,6 +399,7 @@ class UserViewsTestCase(TestCase):
 
 	def test_user_delete_post_redirected(self):
 		"""Ensures user account deletion occurs"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -427,7 +438,9 @@ class SearchViewTestCase(TestCase):
 		db.session.rollback()
 
 	def test_search_get_user(self):
-		"""
+		"""Ensures search page renders correctly for a registered
+		user"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -442,6 +455,8 @@ class SearchViewTestCase(TestCase):
 				session['GUEST_GEOCODE']
 
 	def test_search_get_guest(self):
+		"""Ensures search page renders correctly for a guest user"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['GUEST_GEOCODE'] = 99
@@ -487,6 +502,8 @@ class ProjectViewsTestCase(TestCase):
 		db.session.rollback()
 
 	def test_project_detail_get(self):
+		"""Ensures project detail page renders correctly"""
+
 		with app.test_client() as client:
 			resp = client.get(f"/project/{self.project1_id}")
 
@@ -501,6 +518,9 @@ class ProjectViewsTestCase(TestCase):
 				session['CURR_USER_KEY']
 	
 	def test_project_new_get(self):
+		"""Ensures new project form renders correctly for a registered
+		user"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -516,6 +536,8 @@ class ProjectViewsTestCase(TestCase):
 				session['GUEST_GEOCODE']
 
 	def test_project_new_post(self):
+		"""Ensures new project form Post request redirects"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -533,6 +555,9 @@ class ProjectViewsTestCase(TestCase):
 			self.assertEqual(resp.status_code,302)
 	
 	def test_project_new_post_redirected(self):
+		"""Ensures redirected page and data is processed correctly from
+		the Post request"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -560,6 +585,9 @@ class ProjectViewsTestCase(TestCase):
 			self.assertTrue(g.get('user', None))
 
 	def test_project_edit_get(self):
+		"""Ensures project edit form renders correctly for the registered
+		user who posted the post"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -578,6 +606,8 @@ class ProjectViewsTestCase(TestCase):
 			self.assertTrue(g.get('user', None))
 
 	def test_project_edit_post(self):
+		"""Ensures project edit form redirects"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -596,6 +626,9 @@ class ProjectViewsTestCase(TestCase):
 			self.assertEqual(resp.status_code,302)
 	
 	def test_project_edit_post_redirected(self):
+		"""Ensures rendered page renders and processes the data correctly
+		from the Post request"""
+
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -625,6 +658,8 @@ class ProjectViewsTestCase(TestCase):
 			self.assertTrue(g.get('user', None))
 
 	def test_project_delete_post(self):
+		"""Ensures project deletion redirects the registered
+		user who posted the post"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -635,6 +670,8 @@ class ProjectViewsTestCase(TestCase):
 			self.assertEqual(resp.location, "http://localhost/search")
 	
 	def test_project_delete_post_redirected(self):
+		"""Ensures the redirected page renders correctly and 
+		processes the Post request"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -658,6 +695,8 @@ class APIGeocodeTestCase(TestCase):
 	"""Tests for API geocode"""
 
 	def test_api_geocode(self):
+		"""Ensures geocode is received correctly from API"""
+
 		with app.test_client() as client:
 			resp = client.get("/api/geocode?address=3211%20Grant%20McConachie")
 
@@ -698,6 +737,8 @@ class APINeighbourhoodTestCase(TestCase):
 		db.session.rollback()
 
 	def test_api_neighborhood(self):
+		"""Ensures nearby projects can be queried from database"""
+
 		with app.test_client() as client:
 			resp = client.get("""api/neighborhood?north=49.376019219200614&south=49.107045276672984&east=-122.75234442225093&west=-123.5310004281103""")
 
@@ -723,7 +764,9 @@ class APITagsTestCase(TestCase):
 
 		db.session.rollback()
 
-	def test_api_neighborhood(self):
+	def test_api_tags(self):
+		"""Ensures full tag list can be queried"""
+
 		with app.test_client() as client:
 			resp = client.get("/api/tags")
 
