@@ -444,23 +444,39 @@ class ProjectViewsTestCase(TestCase):
 		t1 = Tag(name='glass art')
 		db.session.add_all([user, t1])
 		db.session.commit()
+		self.user = user
+		self.tag1 = t1
+
 		p1 = Project(
 			**project1,
 			user_id =user.id,
 		)
 		db.session.add(p1)
 		db.session.commit()
+		self.project1_id = p1.id
 		p1.tags = [t1]
 		db.session.commit()
-		self.user = user
-		self.project1 = p1
-		self.tag1 = t1
+		
 
 	def tearDown(self):
 		"""Clean up fouled transactions."""
 
 		db.session.rollback()
 
+	def test_project_detail_get(self):
+		with app.test_client() as client:
+			resp = client.get(f"/project/{self.project1_id}")
+
+			html = resp.get_data(as_text=True)
+
+			self.assertEqual(resp.status_code,200)
+			self.assertIn(f"<h2>{project1['name']}</h2>", html)
+			self.assertIn('<p>Tags: glass art</p>', html)
+			with self.assertRaises(KeyError):
+				session['GUEST_GEOCODE']
+			with self.assertRaises(KeyError):
+				session['CURR_USER_KEY']
+	
 	def test_project_new_get(self):
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
@@ -520,61 +536,98 @@ class ProjectViewsTestCase(TestCase):
 				session['GUEST_GEOCODE']
 			self.assertTrue(g.get('user', None))
 
-	# def test_project_edit_get(self):
-	# 	with app.test_client() as client:
-	# 		with client.session_transaction() as change_session:
-	# 			change_session['CURR_USER_KEY'] = self.user.id
-	# 		resp = client.get(f"/project/{self.project1.id}/edit")
+	def test_project_edit_get(self):
+		with app.test_client() as client:
+			with client.session_transaction() as change_session:
+				change_session['CURR_USER_KEY'] = self.user.id
+			resp = client.get(f"/project/{self.project1_id}/edit")
 
-	# 		html = resp.get_data(as_text=True)
+			html = resp.get_data(as_text=True)
 
-	# 		self.assertEqual(resp.status_code,200)
-	# 		self.assertIn("Log out</button>", html)
-	# 		self.assertIn("<h2>New Project</h2>", html)
-	# 		self.assertIn('<option value="glass art" />', html)
-	# 		with self.assertRaises(KeyError):
-	# 			session['GUEST_GEOCODE']
+			self.assertEqual(resp.status_code,200)
+			self.assertIn("Log out</button>", html)
+			self.assertIn(" <h2>Edit Your Post</h2>", html)
+			self.assertIn('Stained Glass', html)
+			self.assertIn("Update Project", html)
+			self.assertIn("Delete Project", html)
+			with self.assertRaises(KeyError):
+				session['GUEST_GEOCODE']
+			self.assertTrue(g.get('user', None))
 
-	# def test_project_edit_post(self):
-	# 	with app.test_client() as client:
-	# 		with client.session_transaction() as change_session:
-	# 			change_session['CURR_USER_KEY'] = self.user.id
-	# 		g = {"user": user_data}
-	# 		resp = client.post(
-	# 			f"/project/{self.project1.id}/edit", data={
-	# 				'form-project-edit-name': project2['name'],
-	# 				'form-project-edit-description': "#",
-	# 				'form-project-edit-contact_info_type': project2['contact_info_type'],
-	# 				'form-project-edit-contact_info': project2['contact_info'],
-	# 				'form-project-edit-lat': project2['lat'],
-	# 				'form-project-edit-long': project2['long'],
-	# 			})
+	def test_project_edit_post(self):
+		with app.test_client() as client:
+			with client.session_transaction() as change_session:
+				change_session['CURR_USER_KEY'] = self.user.id
+			g = {"user": user_data}
+			resp = client.post(
+				f"/project/{self.project1_id}/edit", data={
+					'form-project-edit-name': project2['name'],
+					'form-project-edit-description': "#",
+					'form-project-edit-contact_info_type': project2['contact_info_type'],
+					'form-project-edit-contact_info': project2['contact_info'],
+					'form-project-edit-lat': project2['lat'],
+					'form-project-edit-long': project2['long'],
+					'form-project-edit-tags': "",
+				})
 
-	# 		self.assertEqual(resp.status_code,302)
+			self.assertEqual(resp.status_code,302)
 	
-	# def test_project_edit_post_redirected(self):
-	# 	with app.test_client() as client:
-	# 		with client.session_transaction() as change_session:
-	# 			change_session['CURR_USER_KEY'] = self.user.id
-	# 		g = {"user": user_data}
-	# 		resp = client.post(
-	# 			f"/project/{self.project1.id}/edit", data={
-	# 				'form-project-edit-name': project2['name'],
-	# 				'form-project-edit-description': "#",
-	# 				'form-project-edit-contact_info_type': project2['contact_info_type'],
-	# 				'form-project-edit-contact_info': project2['contact_info'],
-	# 				'form-project-edit-lat': project2['lat'],
-	# 				'form-project-edit-long': project2['long'],
-	# 			},
-	# 			follow_redirects=True
-	# 		)
-	# 		html = resp.get_data(as_text=True)
+	def test_project_edit_post_redirected(self):
+		with app.test_client() as client:
+			with client.session_transaction() as change_session:
+				change_session['CURR_USER_KEY'] = self.user.id
+			g = {"user": user_data}
+			resp = client.post(
+				f"/project/{self.project1_id}/edit", data={
+					'form-project-edit-name': project2['name'],
+					'form-project-edit-description': "#",
+					'form-project-edit-contact_info_type': project2['contact_info_type'],
+					'form-project-edit-contact_info': project2['contact_info'],
+					'form-project-edit-lat': project2['lat'],
+					'form-project-edit-long': project2['long'],
+					'form-project-edit-tags': "",
+				},
+				follow_redirects=True
+			)
+			html = resp.get_data(as_text=True)
 
-	# 		self.assertEqual(resp.status_code,200)
-	# 		self.assertIn("Project created successfully", html)
-	# 		self.assertIn(f"<h2>{project2['name']}</h2>", html)
-	# 		self.assertIn("Edit this Project", html)	
-	# 		self.assertTrue(session['CURR_USER_KEY'])
-	# 		with self.assertRaises(KeyError):
-	# 			session['GUEST_GEOCODE']
-	# 		self.assertTrue(g.get('user', None))
+			self.assertEqual(resp.status_code,200)
+			self.assertIn("Project edited successfully.", html)
+			self.assertIn(f"<h2>{project2['name']}</h2>", html)
+			self.assertIn("<p><i>#</i></p>", html)
+			self.assertIn("Edit this Project", html)	
+			self.assertTrue(session['CURR_USER_KEY'])
+			with self.assertRaises(KeyError):
+				session['GUEST_GEOCODE']
+			self.assertTrue(g.get('user', None))
+
+	def test_project_delete_post(self):
+		with app.test_client() as client:
+			with client.session_transaction() as change_session:
+				change_session['CURR_USER_KEY'] = self.user.id
+			g = {"user": user_data}
+			resp = client.post(f"/project/{self.project1_id}/delete")
+
+			self.assertEqual(resp.status_code,302)
+			self.assertEqual(resp.location, "http://localhost/search")
+	
+	def test_project_delete_post_redirected(self):
+		with app.test_client() as client:
+			with client.session_transaction() as change_session:
+				change_session['CURR_USER_KEY'] = self.user.id
+			g = {"user": user_data}
+			resp = client.post(
+				f"/project/{self.project1_id}/delete",
+				follow_redirects=True
+			)
+			html = resp.get_data(as_text=True)
+
+			self.assertEqual(resp.status_code,200)
+			self.assertIn("Log out</button>", html)
+			self.assertIn("Project deleted successfully.", html)
+			self.assertIn("<h2>Search</h2>", html)
+			self.assertTrue(session['CURR_USER_KEY'])
+			with self.assertRaises(KeyError):
+				session['GUEST_GEOCODE']
+			self.assertTrue(g.get('user', None))
+

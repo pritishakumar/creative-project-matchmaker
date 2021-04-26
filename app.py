@@ -332,9 +332,11 @@ def project_edit(project_id):
         project.pic_url1 = request.form.get('pic_url1')
         project.pic_url2 = request.form.get('pic_url2')
 
-        tags = request.form.get('tags').split('|')
+        tags = request.form.get('tags')
+        if (tags):
+            tags = tags.split('|')
         tag_objs = []
-        if (len(tags) > 0):
+        if (tags and len(tags) > 0):
             for name in tags:
                 tag_obj = Tag.lookup_tag(name)
                 if not tag_obj:
@@ -356,6 +358,9 @@ def project_edit(project_id):
                 pass
                 optional_date_values.append(None)
                 print('caught value error', optional_date_values)
+            except AttributeError:
+                optional_date_values.append(None)
+                print('caught value error', optional_date_values)
         project.inquiry_deadline, project.work_start, project.work_end = optional_date_values      
         db.session.commit()
 
@@ -365,7 +370,7 @@ def project_edit(project_id):
     return render_template("project-edit.html", form=form, project=project, tags_list_str=tags_list_str, tags_full_list=tags_full_list)
 
 
-@app.route("/project/<project_id>/delete")
+@app.route("/project/<project_id>/delete", methods = ["POST"])
 def project_delete(project_id):
     """ Renders form to delete a specific project"""
 
