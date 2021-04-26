@@ -67,6 +67,7 @@ function initMap() {
         updateLocalStorage();
 
         neighborhood = await Project.searchForNearbyMarkers(viewport)
+        console.log(viewport)
         generate_markersNearby(neighborhood);
         generate_projectListing(neighborhood);
     }

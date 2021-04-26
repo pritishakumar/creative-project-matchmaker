@@ -130,6 +130,7 @@ def logout():
     """ Logs current user out of their account """
 
     browser_logout()
+    flash("Successfully logged out.", "success")
     return redirect("/")
 
 
@@ -406,10 +407,10 @@ def api_geocode():
 def api_neighborhood():
     """ Handle project querying in the map vicinity """
 
-    north = request.args['north']
-    south = request.args['south']
-    east = request.args['east']
-    west = request.args['west']
+    north = float(request.args['north'])
+    south = float(request.args['south'])
+    east = float(request.args['east'])
+    west = float(request.args['west'])
 
     neighborhood = Project.query_neighborhood(north, south, east, west)
 

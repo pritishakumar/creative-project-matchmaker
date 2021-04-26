@@ -53,9 +53,9 @@ project1 = {
 project2 = {
 	"name":'Compost Bin',
 	"description":f"""Anyone have metal welding equipment
-                 and skills that they'd be helping to lend to my
-                 project? I want to make a tumbler compost bin from
-                 a metal food grade drum I have lying around!""",
+				 and skills that they'd be helping to lend to my
+				 project? I want to make a tumbler compost bin from
+				 a metal food grade drum I have lying around!""",
 	"contact_info_type":'email',
 	"contact_info": user_data["email"],
 	"lat":user_data["lat"],
@@ -66,6 +66,8 @@ class LandingTestCase(TestCase):
 	"""Tests for landing page"""
 
 	def test_landing(self):
+		"""Tests rendering landing page"""
+
 		with app.test_client() as client:
 			resp = client.get("/")
 
@@ -102,6 +104,7 @@ class UserViewsTestCase(TestCase):
 		db.session.rollback()
 
 	def test_signup_get(self):
+		"""Tests the get request that renders the form"""
 		with app.test_client() as client:
 			resp = client.get("/profile/new")
 
@@ -118,6 +121,7 @@ class UserViewsTestCase(TestCase):
 			self.assertFalse(g.get('user', None))
 
 	def test_signup_post(self):
+		"""Ensures Post request redirects after processing data"""
 		
 		with app.test_client() as client:
 			resp = client.post(
@@ -137,6 +141,8 @@ class UserViewsTestCase(TestCase):
 			
 	
 	def test_signup_post_redirected(self):
+		"""Ensure Post request loads redirected page correctly"""
+
 		with app.test_client() as client:
 			resp = client.post(
 				"/profile/new", data={
@@ -164,6 +170,7 @@ class UserViewsTestCase(TestCase):
 			
 
 	def test_login_get(self):
+		""" Tests rendering the form via Get request"""
 		with app.test_client() as client:
 			resp = client.get("/login")
 
@@ -180,6 +187,7 @@ class UserViewsTestCase(TestCase):
 			self.assertFalse(g.get('user', None))
 
 	def test_login_post(self):
+		"""Ensures Post request processes data and redirects"""
 		
 		with app.test_client() as client:
 			resp = client.post(
@@ -192,6 +200,8 @@ class UserViewsTestCase(TestCase):
 			self.assertEqual(resp.location, "http://localhost/search")
 	
 	def test_login_post_redirected(self):
+		"""Ensures redirected page renders correctly after Post 
+		request data is processed"""
 		with app.test_client() as client:
 			resp = client.post(
 				"/login", data={
@@ -212,6 +222,7 @@ class UserViewsTestCase(TestCase):
 			self.assertTrue(g.get('user', None))
 
 	def test_guest_get(self):
+		"""Ensures Guest form renders correctly"""
 		with app.test_client() as client:
 			resp = client.get("/guest")
 
@@ -228,6 +239,7 @@ class UserViewsTestCase(TestCase):
 			self.assertFalse(g.get('user', None))
 
 	def test_guest_post(self):
+		"""Ensures Guest Post request directs after submitting data"""
 		
 		with app.test_client() as client:
 			resp = client.post(
@@ -241,6 +253,7 @@ class UserViewsTestCase(TestCase):
 			self.assertEqual(resp.location, "http://localhost/search")
 	
 	def test_guest_post_redirected(self):
+		"""Ensure redirected page renders correctly after Post request"""
 		with app.test_client() as client:
 			resp = client.post(
 				"/guest", data={
@@ -261,6 +274,7 @@ class UserViewsTestCase(TestCase):
 			self.assertFalse(g.get('user', None))
 
 	def test_logout(self):
+		"""Ensures user log out redirects"""
 		
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
@@ -271,6 +285,7 @@ class UserViewsTestCase(TestCase):
 			self.assertEqual(resp.location, "http://localhost/")
 
 	def test_logout_redirected(self):
+		"""Ensures user log out renders landing page correctly"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = 999
@@ -278,6 +293,7 @@ class UserViewsTestCase(TestCase):
 			html = resp.get_data(as_text=True)
 
 			self.assertEqual(resp.status_code,200)
+			self.assertIn("Successfully logged out.", html)
 			self.assertIn("Welcome to <i>Creative Project Matchmaker", html)
 			self.assertIn("An Existing Account?", html)
 			self.assertIn("Proceed As A Guest?", html)
@@ -289,6 +305,7 @@ class UserViewsTestCase(TestCase):
 			self.assertFalse(g.get('user', None))
 
 	def test_user_edit_get(self):
+		"""Ensures user profile edit form renders"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -305,6 +322,7 @@ class UserViewsTestCase(TestCase):
 				session['GUEST_GEOCODE']
 
 	def test_user_edit_post(self):
+		"""Ensures user profile edit Post request redirects after processing data"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -327,6 +345,8 @@ class UserViewsTestCase(TestCase):
 			self.assertEqual(resp.location, "http://localhost/search")
 
 	def test_user_edit_post_redirected(self):
+		"""Ensures redirected page renders correctly after correctly processing
+		Post request data"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -357,6 +377,7 @@ class UserViewsTestCase(TestCase):
 			self.assertTrue(session['CURR_USER_KEY'])
 
 	def test_user_delete_post(self):
+		"""Ensures user account deletion redirects"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -367,6 +388,7 @@ class UserViewsTestCase(TestCase):
 			self.assertEqual(resp.location, "http://localhost/")
 
 	def test_user_delete_post_redirected(self):
+		"""Ensures user account deletion occurs"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -405,6 +427,7 @@ class SearchViewTestCase(TestCase):
 		db.session.rollback()
 
 	def test_search_get_user(self):
+		"""
 		with app.test_client() as client:
 			with client.session_transaction() as change_session:
 				change_session['CURR_USER_KEY'] = self.user.id
@@ -631,3 +654,79 @@ class ProjectViewsTestCase(TestCase):
 				session['GUEST_GEOCODE']
 			self.assertTrue(g.get('user', None))
 
+class APIGeocodeTestCase(TestCase):
+	"""Tests for API geocode"""
+
+	def test_api_geocode(self):
+		with app.test_client() as client:
+			resp = client.get("/api/geocode?address=3211%20Grant%20McConachie")
+
+			self.assertEqual(resp.status_code, 200)
+
+			data = resp.json
+			self.assertEqual(data['results'][0]['address_components'][0]['long_name'], "3211")
+
+class APINeighbourhoodTestCase(TestCase):
+	"""Tests for api neighbourhood"""
+
+	def setUp(self):
+		"""Make demo data."""
+
+		db.drop_all()
+		db.create_all()
+		user = User(**user_data)
+		t1 = Tag(name='glass art')
+		db.session.add_all([user, t1])
+		db.session.commit()
+		self.user = user
+		self.tag1 = t1
+
+		p1 = Project(
+			**project1,
+			user_id =user.id,
+		)
+		db.session.add(p1)
+		db.session.commit()
+		self.project1_id = p1.id
+		p1.tags = [t1]
+		db.session.commit()
+		
+
+	def tearDown(self):
+		"""Clean up fouled transactions."""
+
+		db.session.rollback()
+
+	def test_api_neighborhood(self):
+		with app.test_client() as client:
+			resp = client.get("""api/neighborhood?north=49.376019219200614&south=49.107045276672984&east=-122.75234442225093&west=-123.5310004281103""")
+
+			self.assertEqual(resp.status_code, 200)
+			data = resp.json
+			self.assertEqual(data['projects'][0]['name'], project1['name'] )
+
+class APITagsTestCase(TestCase):
+	"""Tests for api tags"""
+
+	def setUp(self):
+		"""Make demo data."""
+
+		db.drop_all()
+		db.create_all()
+		t1 = Tag(name='glass art')
+		t2 = Tag(name='renovations')
+		db.session.add_all([t1, t2])
+		db.session.commit()
+
+	def tearDown(self):
+		"""Clean up fouled transactions."""
+
+		db.session.rollback()
+
+	def test_api_neighborhood(self):
+		with app.test_client() as client:
+			resp = client.get("/api/tags")
+
+			self.assertEqual(resp.status_code, 200)
+			data = resp.json
+			self.assertEqual(data, ['glass art', 'renovations'] )
